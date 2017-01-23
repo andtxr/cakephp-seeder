@@ -1,0 +1,26 @@
+{
+  "name": "andtxr/cakephp-seeder",
+  "description": "A simple seeder plugin for CakePHP",
+  "type": "cakephp-plugin",
+  "keywords": [
+    "cakephp",
+    "plugin",
+    "seed"
+  ],
+  "homepage": "http://github.com/andtxr/cakephp-seeder",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "André Teixeira",
+      "email": "hello@andtxr.com",
+      "homepage": "http://github.com/andtxr"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.3",
+    "composer/installers": "*"
+  },
+  "extra": {
+    "installer-name": "Seeder"
+  }
+}
