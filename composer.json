@@ -18,7 +18,8 @@
   ],
   "require": {
     "php": ">=5.3.3",
-    "composer/installers": "*"
+    "composer/installers": "*",
+    "fzaninotto/faker": "^1.6"
   },
   "extra": {
     "installer-name": "Seeder"

@@ -1,76 +1,66 @@
-# CakePHP Log Plugin
+# CakePHP Seeder Plugin
 
-A plugin to log some request info and related database changes. Including:
-
-* Model Info
-* Model Options (Save)
-* Request Info
-* Auth Info
+A plugin to plant some seeds in your application.
 
 ## Installation
 
-You may install the Log Plugin through [Composer](http://getcomposer.org) or
-[download](https://github.com/andtxr/cakephp-log/archive/master.zip) the source.
+You may install the Seeder Plugin through [Composer](http://getcomposer.org) or
+[download](https://github.com/andtxr/cakephp-seeder/archive/master.zip) the source.
 
 ### Composer
 
-``composer require andtxr/cakephp-log``
+``composer require andtxr/cakephp-seeder``
 
 ### Source
 
-[Download](https://github.com/andtxr/cakephp-log/archive/master.zip) the source
-and unpack it contents inside ``/Plugin/Log``
+[Download](https://github.com/andtxr/cakephp-seeder/archive/master.zip) the source
+and unpack it contents inside ``/Plugin/Seeder``
 
 ## Activation
 
 Add the following to your ``Config/bootstrap.php``:
 
 ```php
-    CakePlugin::load('Log');
+    CakePlugin::load('Seeder');
 ```
-
-Load the plugin schema file through your CLI:
-
-```
-    cake schema update --plugin Log
-```
-
-You may import the ``Config/Schema/log.sql`` file too.
 
 ## Usage
 
-Add the following behavior to your ``Model/AppModel.php``:
+Create the folder ``Config/Seeds`` and then put the seed files inside of it:
 
 ```php
-    public $actsAs = array('Log.Log');
-```
+<?php
 
-You may set the ``userFields`` param to choose which fields of the authenticated
-user shall be saved:
+App::uses('Seed', 'Seeder.Config/Seeds');
 
-```php
-    public $actsAs = array(
-        'Log.Log' => array(
-            'userModels' => array('Admin'),
-            'userFields' => array('id', 'name')
-        )
-    );
-```
+class UserSeed extends Seed {
 
-### Accessing the log data
-
-You may create some actions to retrieve your log information:
-
-```php
-    public function index()
+    public static function getSeed()
     {
-        $this->loadModel('Log.Log');
-        $this->set('logs', $this->Paginator->paginate('Log'));
+        $faker = Faker\Factory::create();
+        return array(
+            'name' => $faker->name,
+            'email' => $faker->email,
+            'password' => 'abc123'
+        );
     }
 
-    public function view($id)
-    {
-        $this->loadModel('Log.Log');
-        $this->set('log', $this->Log->findById($id));
-    }
+}
+
+?>
 ```
+
+Save it as ``UserSeed.php``.
+
+Try to change the file to match a model of your CakePHP app. 
+
+Now use the shell command:
+
+```shell
+Console/cake seeder.plant -t -q 25 user
+```
+
+You can use the following options:
+
+- --quantity, -q - Quantity of seeds to be planted. (default:15)
+- --truncate, -t - Truncate the model related table.
