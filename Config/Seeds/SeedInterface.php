@@ -5,6 +5,6 @@
  */
 interface SeedInterface {
 
-    public static function getSeed();
+    public static function getSeed($quantity);
 
 }
