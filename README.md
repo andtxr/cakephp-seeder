@@ -35,14 +35,20 @@ App::uses('Seed', 'Seeder.Config/Seeds');
 
 class UserSeed extends Seed {
 
-    public static function getSeed()
+    public static function getSeed($quantity = 1)
     {
         $faker = Faker\Factory::create();
-        return array(
-            'name' => $faker->name,
-            'email' => $faker->email,
-            'password' => 'abc123'
-        );
+        $users = array();
+
+        for ($i=1; $i<=$quantity; $i++) {
+            $users[] = array(
+                'name' => $faker->name,
+                'email' => $faker->email,
+                'password' => 'abc123'
+            );
+        }
+
+        return $users;
     }
 
 }
