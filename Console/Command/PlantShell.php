@@ -40,7 +40,7 @@ class PlantShell extends AppShell
     public function seedModel($model)
     {
         $models = App::objects('model');
-        $modelExists = in_array($model,$models);
+        $modelExists = in_array($model, $models);
 
         if (!$modelExists) {
             $this->out(__('<error>Model not found...</error>'));
@@ -57,21 +57,23 @@ class PlantShell extends AppShell
 
         $this->out(__('Checking options and arguments...'));
         if ($truncate == true) {
-            $truncated = $this->{$model}->deleteAll(array('id !=' => ''));
-            $return = ($truncated == true) ? __('<info>Table truncated!</info>') : __('<warning>The table could not be truncated.</warning>');
+            $truncated = $this->{$model}->deleteAll(array("{$model}.id !=" => ''));
+            $return = ($truncated == true)
+                ? __('<info>Table truncated!</info>')
+                : __('<warning>The table could not be truncated.</warning>');
             $this->out($return);
         }
 
         $this->out(__('Building a records collection...'));
-        $records = array();
-        for ($i=0; $i<$quantity; $i++) {
-            $records[] = $this->getSeed($model);
-        }
+        $records = $this->getSeed($model, $quantity);
 
         $this->out(__('Trying to save the records...'));
-        $saved = $this->{$model}->saveMany($records);
-        $return = ($saved == true) ? __('<info>%s records saved!</info>', $quantity) : __('<warning>There was a problem while saving the records collection.</warning>');
+        $saved = $this->{$model}->saveMany($records, array('validate' => false));
+        $return = ($saved == true)
+            ? __('<info>%s records saved!</info>', $quantity)
+            : __('<warning>There was a problem while saving the records collection.</warning>');
         $this->out($return);
+
         $this->hr();
         $this->out('<info>The seed process is done!</info>');
         $this->hr();
@@ -79,13 +81,14 @@ class PlantShell extends AppShell
 
     /**
      * @param $model
+     * @param $quantity
      * @return mixed
      */
-    private function getSeed($model)
+    private function getSeed($model, $quantity)
     {
         $class = "{$model}Seed";
         App::uses($class, 'Config/Seeds');
-        return $class::getSeed();
+        return $class::getSeed($quantity);
     }
 
 }
